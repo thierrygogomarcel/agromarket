@@ -1,24 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    },
-    "types": [
-      "@nuxt/types",
-      "@types/node"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
-  ]
+  // https://v3.nuxtjs.org/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }

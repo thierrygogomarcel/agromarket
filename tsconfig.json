@@ -12,19 +12,13 @@
       "@/*": ["./*"]
     },
     "types": [
-      "node",      // Ajoute ici pour le support Node.js
-      "nuxt",      // Ajoute ici pour le support Nuxt.js
-      "@types/jest" // Si tu utilises Jest pour les tests
-    ],
-    "lib": [
-      "dom",
-      "esnext"
+      "@nuxt/types",
+      "@types/node"
     ]
   },
-  "include": [
-    "nuxt.config.ts", // Ajoute ton fichier nuxt.config.ts ici
-    "plugins/**/*.ts", // Inclure tous les plugins TypeScript
-    "pages/**/*.ts",   // Inclure toutes les pages TypeScript
-    "components/**/*.ts" // Inclure tous les composants TypeScript
+  "exclude": [
+    "node_modules",
+    ".nuxt",
+    "dist"
   ]
 }

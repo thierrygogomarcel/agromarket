@@ -1,36 +1,27 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
-    "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
-    "noEmit": true,
-    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "types": [
-      "@nuxt/types",
-      "@types/node"
-    ]
+      "node", // Ajoute ici pour le support Node.js
+      "nuxt", // Ajoute ici pour le support Nuxt.js
+      "@types/jest" // Si tu utilises Jest pour les tests
+    ],
+    "lib": ["dom", "esnext"]
   },
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
+  "include": [
+    "nuxt.config.ts", // Ajoute ton fichier nuxt.config.ts ici
+    "plugins/**/*.ts", // Inclure tous les plugins TypeScript
+    "pages/**/*.ts", // Inclure toutes les pages TypeScript
+    "components/**/*.ts" // Inclure tous les composants TypeScript
   ]
 }

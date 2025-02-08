@@ -1,0 +1,17 @@
+// .eslintrc.json
+{
+    "rules": {
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [
+            {
+              "group": ["~*"],
+              "message": "L'alias '~' n'est pas autorisé côté serveur. Utilisez des imports relatifs.",
+              "path": "server/**"
+            }
+          ]
+        }
+      ]
+    }
+  }

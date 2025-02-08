@@ -1,39 +1,68 @@
 <template>
-  <div>
-    <Connector />
-    <NuxtWelcome />
-    <iframe
-      :src="`${nhostUrl}/console`"
-      frameborder="0"
-      style="width: 100%; height: 100vh"
-    ></iframe>
-  </div>
+  <NuxtLayout>
+    <div class="relative min-h-screen">
+      <!-- Global background -->
+      <div class="page-background"></div>
+      
+      <!-- Company presentation on startup -->
+      <CompanyPresentation v-if="showPresentation" @close="closePresentation" />
+      
+      <!-- Fixed header -->
+      <TheHeader class="fixed top-0 left-0 right-0 z-40" />
+      
+      <!-- Main content with padding for fixed header -->
+      <div class="content pt-5">
+        <NuxtPage />
+      </div>
+    </div>
+  </NuxtLayout>
 </template>
 
-<script lang="ts" setup>
-import { onMounted } from 'vue';
-import { NhostClient } from '@nhost/nhost-js';
-import { createClient, provideClient } from '@urql/vue';
-import { useLogger } from '@/composables/useApp';
+<script setup lang="ts"> 
 
-const logger = useLogger('App');
-const config = useRuntimeConfig();
-const nhostUrl = computed(() => {
-  return `https://${config.public.NHOST_PROJECT_ID}.nhost.run`;
-});
-const nhost = new NhostClient({
-  backendUrl: nhostUrl.value,
-});
-provide('nhost', nhost);
+const showPresentation = ref(true)
 
-const client = createClient({
-  url: `${nhostUrl.value}/v1/graphql`,
-});
-provideClient(client);
+// Check if presentation was already shown
+const hasSeenPresentation = () => {
+  return localStorage.getItem('hasSeenPresentation')
+}
+
+
+const closePresentation = () => {
+  showPresentation.value = false
+  localStorage.setItem('hasSeenPresentation', 'true')
+}
 
 onMounted(() => {
-  logger.log(':onMounted', config);
-  logger.log('nhost', nhost);
-  logger.log('client', client);
-});
+  // Only show presentation if not seen before
+  if (hasSeenPresentation()) {
+    showPresentation.value = false
+  } else {
+    // Auto-close after 30 seconds
+    setTimeout(() => {
+      closePresentation()
+    }, 30000)
+  }
+})
+
+useHead({
+  title: 'GoGoMarket - La marketplace des produits agricoles',
+  meta: [
+    {
+      name: 'description',
+      content: "GogoMarket connecte les producteurs agricoles aux acheteurs pour faciliter la vente de produits agricoles en Afrique de l'Ouest.",
+    },
+  ],
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/logo.png'
+    }
+  ]
+})
 </script>
+
+<style>
+@import 'assets/css/style.css';
+</style>

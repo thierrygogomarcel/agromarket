@@ -1,7 +1,10 @@
+.nhost
+.secrets
 node_modules
-*.log*
 .nuxt
-.nitro
-.cache
 .output
-.env
+.vscode
+structure*
+liste.bat
+refactor.md 
+

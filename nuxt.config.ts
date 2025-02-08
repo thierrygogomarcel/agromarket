@@ -1,47 +1,58 @@
+import { defineNuxtConfig } from 'nuxt/config';
+
 export default defineNuxtConfig({
-  // Global page headers: https://go.nuxtjs.dev/config-head
-  head: {
-    title: 'gogomarket2025',
-    htmlAttrs: {
-      lang: 'en',
-    },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' },
-    ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+  ssr: true,
+
+  // Configuration Nhost
+  nhost: {
+    subdomain: process.env.NHOST_SUBDOMAIN, // Assurez-vous que cette variable est définie dans .env
+    region: process.env.NHOST_REGION || 'eu-central-1', // Région par défaut si non spécifiée
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  // Configuration Nitro
+  nitro: {
+    preset: 'node',
+  },
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    // Nhost Plugin to initialize client
-    { src: '~/plugins/nhost.client.ts', mode: 'client' },
-  ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/tailwindcss'],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    '@nhost/nhost-vue', // Integrate Nhost with Vue (for auth, etc.)
-  ],
-
-  // Environment variables
+  // Configuration runtime (variables d'environnement)
   runtimeConfig: {
+    // Variables privées (accessibles uniquement côté serveur)
+    jwtSecret: process.env.NHOST_JWT_SECRET || '', // Clé secrète JWT
+    mongodbUri: process.env.MONGODB_URI || '', // Conservez cette variable pour une éventuelle compatibilité future
+
+    // Variables publiques (accessibles côté client et serveur)
     public: {
-      nhostSubdomain: process.env.NUXT_PUBLIC_NHOST_SUBDOMAIN || 'localhost',
-      nhostRegion: process.env.NUXT_PUBLIC_NHOST_REGION || 'us-east-1',
+      apiBase: process.env.NHOST_GRAPHQL_URL || 'https://abc123abc.graphql.eu-central-1.nhost.run/v1', // URL GraphQL de Nhost
+      baseUrl: process.env.BASE_URL || 'http://localhost:3000', // URL de base de votre application
+      auth: {
+        isEnabled: true,
+        baseURL: process.env.NHOST_AUTH_URL || 'https://abc123abc.auth.eu-central-1.nhost.run/v1', // URL d'authentification de Nhost
+        provider: {
+          type: 'oauth', // Type de connexion (OAuth)
+        },
+      },
     },
   },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  // Modules Nuxt
+  modules: [
+    '@nuxtjs/tailwindcss', // Tailwind CSS
+    '@pinia/nuxt', // Pinia pour la gestion de l'état
+    '@vueuse/nuxt', // VueUse pour des utilitaires de composition
+    '@nuxtjs/color-mode', // Gestion des modes de couleur
+  ],
+
+  // Fichiers CSS globaux
+  css: [
+    'assets/css/style.css', // Votre fichier CSS personnalisé
+    'vue3-toastify/dist/index.css', // CSS pour les notifications Toastify
+  ],
+
+  // Configuration de build
+  build: {
+    transpile: ['vue3-toastify'], // Transpiler Vue3 Toastify
+  },
+
+  // Date de compatibilité (pour les environnements modernes)
+  compatibilityDate: '2025-02-05',
 });

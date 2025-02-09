@@ -2,17 +2,22 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useNhostClient } from '@nhost/vue'
 import type { User } from '@nhost/core'
+import { useToast } from './useToast'
 
 interface AuthState {
   user: User | null
   loading: boolean
+  token: string | null
 }
 
-export const useCustomAuth = defineStore('auth', () => {
+export const useAuth = defineStore('auth', () => {
   const nhost = useNhostClient()
+  const toast = useToast()
+  
   const state = ref<AuthState>({
     user: null,
     loading: false,
+    token: null
   })
 
   const isAuthenticated = computed(() => !!state.value.user)
@@ -22,16 +27,19 @@ export const useCustomAuth = defineStore('auth', () => {
       state.value.loading = true
       const { session, error } = await nhost.auth.signIn({
         email,
-        password,
+        password
       })
 
       if (error) throw error
 
       state.value.user = session?.user ?? null
+      state.value.token = session?.accessToken ?? null
+      
+      toast.success('Connexion réussie')
       return session
     } catch (error: any) {
-      console.error('Login error:', error)
-      throw new Error(error.message)
+      toast.error('Email ou mot de passe incorrect')
+      throw error
     } finally {
       state.value.loading = false
     }
@@ -63,10 +71,13 @@ export const useCustomAuth = defineStore('auth', () => {
       if (error) throw error
 
       state.value.user = session?.user ?? null
+      state.value.token = session?.accessToken ?? null
+      
+      toast.success('Inscription réussie')
       return session
     } catch (error: any) {
-      console.error('Registration error:', error)
-      throw new Error(error.message)
+      toast.error('Erreur lors de l\'inscription')
+      throw error
     } finally {
       state.value.loading = false
     }
@@ -79,9 +90,12 @@ export const useCustomAuth = defineStore('auth', () => {
       if (error) throw error
       
       state.value.user = null
+      state.value.token = null
+      
+      toast.success('Déconnexion réussie')
     } catch (error: any) {
-      console.error('Logout error:', error)
-      throw new Error(error.message)
+      toast.error('Erreur lors de la déconnexion')
+      throw error
     } finally {
       state.value.loading = false
     }
@@ -90,6 +104,7 @@ export const useCustomAuth = defineStore('auth', () => {
   // Initialize auth state
   nhost.auth.onAuthStateChanged((event, session) => {
     state.value.user = session?.user ?? null
+    state.value.token = session?.accessToken ?? null
   })
 
   return {

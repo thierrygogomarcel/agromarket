@@ -1,11 +1,11 @@
- 
 import { ref, computed } from 'vue'
-import { useDeliveryStore } from '~/stores/deliveryStore'
+import { useNhostClient } from '@nhost/vue'
 import { useToast } from './useToast'
 
 export const useDelivery = () => {
-  const deliveryStore = useDeliveryStore()
+  const nhost = useNhostClient()
   const toast = useToast()
+  const loading = ref(false)
   const estimatedFees = ref(null)
 
   const calculateDeliveryFees = async (data: {
@@ -14,18 +14,41 @@ export const useDelivery = () => {
     weight: number
   }) => {
     try {
-      const response = await deliveryStore.calculateFees(data)
-      estimatedFees.value = response
-      return response
+      loading.value = true
+      const { data: result, error } = await nhost.graphql.request(`
+        mutation CalculateDeliveryFees($input: delivery_calculation_input!) {
+          calculate_delivery_fees(input: $input) {
+            amount
+            estimated_time
+            distance
+          }
+        }
+      `, {
+        variables: {
+          input: {
+            origin_lat: data.origin.latitude,
+            origin_lng: data.origin.longitude,
+            dest_lat: data.destination.latitude,
+            dest_lng: data.destination.longitude,
+            weight: data.weight
+          }
+        }
+      })
+
+      if (error) throw error
+      estimatedFees.value = result.calculate_delivery_fees
+      return result.calculate_delivery_fees
     } catch (error: any) {
       toast.error('Erreur lors du calcul des frais de livraison')
       throw error
+    } finally {
+      loading.value = false
     }
   }
 
   return {
     estimatedFees: computed(() => estimatedFees.value),
-    loading: computed(() => deliveryStore.loading),
+    loading: computed(() => loading.value),
     calculateDeliveryFees
   }
-} 
+}

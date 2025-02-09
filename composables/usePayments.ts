@@ -5,6 +5,7 @@ import { useToast } from './useToast'
 export const usePayments = () => {
   const nhost = useNhostClient()
   const toast = useToast()
+  const loading = ref(false)
 
   const initiatePayment = async (data: {
     amount: number

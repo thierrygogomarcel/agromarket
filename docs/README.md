@@ -1,191 +1,131 @@
 # GoGoMarket - Documentation Technique
 
-## 1. Vue d'ensemble
+## Vue d'ensemble
 
-GoGoMarket est une plateforme de commerce électronique innovante dédiée aux produits agricoles en Afrique de l'Ouest. Elle connecte directement les producteurs aux acheteurs tout en offrant une expérience utilisateur moderne et sécurisée.
+GoGoMarket est une plateforme de commerce électronique innovante dédiée aux produits agricoles en Afrique de l'Ouest, construite avec Nuxt 3 et Nhost.
 
 ### Technologies Principales
+
 - Frontend: Nuxt 3 (Vue.js)
-- Backend: Nhost BaaS (PostgreSQL, Auth, Storage)
+- Backend: Nhost BaaS
+  - Auth: Nhost Auth
+  - Database: PostgreSQL
+  - Storage: Nhost Storage
+  - Functions: Nhost Functions
 - UI: Tailwind CSS
 - State Management: Pinia
-- Authentification: Nhost Auth
-- Base de données: PostgreSQL (via Nhost)
-- Stockage: Nhost Storage
 - Paiements: MTN Money, Orange Money
 
-## 2. Installation
+## Installation
 
 ### Prérequis
+
 - Node.js 16.x ou supérieur
 - npm ou yarn
-- Compte Nhost (pour le backend)
+- Compte Nhost
 
 ### Configuration
 
 1. Cloner le projet :
-```bash
+\`\`\`bash
 git clone https://github.com/votre-compte/gogomarket.git
 cd gogomarket
-```
+\`\`\`
 
 2. Installer les dépendances :
-```bash
+\`\`\`bash
 npm install
-# ou
-yarn install
-```
+\`\`\`
 
 3. Configurer les variables d'environnement :
-```bash
+\`\`\`bash
 cp .env.example .env
-```
+\`\`\`
 
-Remplir les variables suivantes dans le fichier `.env` :
-```
+Remplir les variables suivantes dans le fichier \`.env\` :
+\`\`\`
 NHOST_SUBDOMAIN=votre-subdomain
 NHOST_REGION=votre-region
-NHOST_ADMIN_SECRET=votre-secret
-```
+\`\`\`
 
 4. Démarrer le serveur de développement :
-```bash
+\`\`\`bash
 npm run dev
-# ou
-yarn dev
-```
+\`\`\`
 
-## 3. Architecture
+## Architecture
 
-### 3.1 Structure du Projet
-```
+### Structure du Projet
+\`\`\`
 gogomarket/
-├── components/        # Composants réutilisables
-├── composables/      # Logique métier réutilisable
-├── layouts/          # Layouts de l'application
-├── pages/            # Pages de l'application
-├── plugins/          # Plugins Nuxt
-├── public/           # Assets statiques
-├── stores/           # Stores Pinia
-└── types/            # Types TypeScript
-```
+├── components/     # Composants réutilisables
+├── composables/    # Logique métier réutilisable
+├── layouts/        # Layouts de l'application
+├── pages/         # Pages de l'application
+├── plugins/       # Plugins Nuxt et Nhost
+├── public/        # Assets statiques
+└── stores/        # Stores Pinia
+\`\`\`
 
-### 3.2 Composants Principaux
+### Fonctionnalités Principales
 
-#### Auth
-- `LoginForm.vue` - Formulaire de connexion
-- `RegisterForm.vue` - Formulaire d'inscription
-- `UserProfile.vue` - Profil utilisateur
-
-#### Dashboard
-- `AdminDashboard.vue` - Dashboard administrateur
-- `SellerDashboard.vue` - Dashboard vendeur
-- `BuyerDashboard.vue` - Dashboard acheteur
-
-#### Marketplace
-- `ProductList.vue` - Liste des produits
-- `ProductCard.vue` - Carte produit
-- `ShoppingCart.vue` - Panier d'achat
-
-## 4. Fonctionnalités
-
-### 4.1 Authentification
+#### Authentification
 - Inscription/Connexion par email/mot de passe
 - Gestion des rôles (Admin, Vendeur, Acheteur)
 - Profils utilisateurs personnalisés
 
-### 4.2 Gestion des Produits
-- CRUD complet des produits
-- Upload d'images multiples
-- Catégorisation
-- Gestion des stocks
-
-### 4.3 Système de Paiement
-- Intégration MTN Money
-- Intégration Orange Money
-- Historique des transactions
-- Portefeuille électronique
-
-### 4.4 Chat & Messagerie
-- Chat en temps réel entre acheteurs et vendeurs
+#### Marketplace
+- CRUD des produits
+- Gestion des catégories
+- Système de paiement mobile
+- Chat en temps réel
 - Notifications
-- Support client
 
-## 5. API & Intégrations
+#### Dashboards
+- Admin: Gestion globale
+- Vendeur: Gestion des produits et ventes
+- Acheteur: Suivi des achats
 
-### 5.1 Nhost
-- Authentication
-- Storage
-- Database
-- Functions
+### Base de données
 
-### 5.2 Paiements
-- MTN Mobile Money API
-- Orange Money API
+La base de données PostgreSQL est gérée via Nhost. Voici les principales tables :
 
-## 6. Déploiement
+- users
+- products
+- categories
+- orders
+- transactions
+- messages
 
-### 6.1 Production
-```bash
-# Build de l'application
-npm run build
+### Sécurité
 
-# Démarrer en production
-npm run start
-```
-
-### 6.2 Configuration Serveur
-- Node.js 16.x
-- PM2 pour la gestion des processus
-- Nginx comme reverse proxy
-
-## 7. Sécurité
-
-### 7.1 Authentification
-- JWT via Nhost Auth
-- Sessions sécurisées
+- Authentification via Nhost Auth
+- Row Level Security (RLS) pour PostgreSQL
+- Validation des données côté serveur
 - Protection CSRF
-
-### 7.2 Données
-- Chiffrement des données sensibles
-- Validation des entrées
 - Rate limiting
 
-## 8. Performance
+### Déploiement
 
-### 8.1 Optimisations
-- SSR (Server-Side Rendering)
-- Lazy loading des composants
-- Compression des images
-- Mise en cache
+1. Build de l'application :
+\`\`\`bash
+npm run build
+\`\`\`
 
-### 8.2 Monitoring
-- Logs d'erreurs
-- Métriques de performance
-- Alertes
+2. Déploiement sur Netlify :
+- Connectez votre repository
+- Configurez les variables d'environnement
+- Déployez !
 
-## 9. Support & Maintenance
+## Contribution
 
-### Contact
+1. Fork le projet
+2. Créez une branche (\`git checkout -b feature/AmazingFeature\`)
+3. Commit vos changements (\`git commit -m 'Add some AmazingFeature'\`)
+4. Push vers la branche (\`git push origin feature/AmazingFeature\`)
+5. Ouvrez une Pull Request
+
+## Support
+
 - Email: support@gogomarket.com
 - Téléphone: +225 07 58 96 61 56
-
-### Documentation
-- [API Reference](./api.md)
-- [Guide Utilisateur](./user-guide.md)
-- [FAQ](./faq.md)
-
-## 10. Contribution
-
-### Guide de Contribution
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-### Standards de Code
-- ESLint pour le linting
-- Prettier pour le formatage
-- Tests unitaires avec Vitest
-- Tests E2E avec Cypress

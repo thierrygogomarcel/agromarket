@@ -1,28 +1,17 @@
-import { defineNuxtConfig } from 'nuxt/config'
-
 export default defineNuxtConfig({
   ssr: true,
 
-  // Configuration Nhost
-  nhost: {
-    subdomain: process.env.NHOST_SUBDOMAIN,
-    region: process.env.NHOST_REGION || 'eu-central-1',
-  },
-
   // Configuration runtime
   runtimeConfig: {
-    // Variables privées (côté serveur uniquement)
-    nhostAdminSecret: process.env.NHOST_ADMIN_SECRET,
-    nhostWebhookSecret: process.env.NHOST_WEBHOOK_SECRET,
-
-    // Variables publiques (côté client et serveur)
     public: {
       nhostSubdomain: process.env.NHOST_SUBDOMAIN,
-      nhostRegion: process.env.NHOST_REGION,
+      nhostRegion: process.env.NHOST_REGION || 'eu-central-1',
       nhostGraphqlUrl: process.env.NHOST_GRAPHQL_URL,
       nhostAuthUrl: process.env.NHOST_AUTH_URL,
       nhostStorageUrl: process.env.NHOST_STORAGE_URL,
       nhostFunctionsUrl: process.env.NHOST_FUNCTIONS_URL,
+      appName: process.env.APP_NAME || 'GoGoMarket',
+      appDescription: process.env.APP_DESCRIPTION || 'La marketplace des produits agricoles'
     }
   },
 
@@ -45,6 +34,25 @@ export default defineNuxtConfig({
     transpile: ['vue3-toastify']
   },
 
-  // Date de compatibilité
+  // App configuration
+  app: {
+    head: {
+      title: 'GoGoMarket - La marketplace des produits agricoles',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { 
+          hid: 'description', 
+          name: 'description', 
+          content: 'GoGoMarket connecte les producteurs agricoles aux acheteurs pour faciliter la vente de produits agricoles en Afrique de l\'Ouest.'
+        }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/logo.png' }
+      ]
+    }
+  },
+
+  // Compatibilité
   compatibilityDate: '2025-02-05'
 })

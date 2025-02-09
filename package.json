@@ -13,8 +13,7 @@
     "@nhost/nhost-js": "^3.2.3",
     "@nhost/vue": "^2.9.1",
     "@nuxtjs/tailwindcss": "^6.11.4",
-    "@pinia/nuxt": "^0.5.1",
-    "@rollup/rollup-linux-x64-musl": "latest",
+    "@pinia/nuxt": "^0.5.1", 
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "defu": "^6.1.2",
@@ -30,8 +29,5 @@
     "@nuxtjs/color-mode": "^3.5.2",
     "@types/node": "^20.17.16",
     "typescript": "^5.3.3"
-  },
-  "overrides": {
-    "rollup": "npm:@rollup/wasm-node"
   }
 }

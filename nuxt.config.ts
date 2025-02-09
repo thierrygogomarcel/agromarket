@@ -1,58 +1,50 @@
-import { defineNuxtConfig } from 'nuxt/config';
+import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   ssr: true,
 
   // Configuration Nhost
   nhost: {
-    subdomain: process.env.NHOST_SUBDOMAIN, // Assurez-vous que cette variable est définie dans .env
-    region: process.env.NHOST_REGION || 'eu-central-1', // Région par défaut si non spécifiée
+    subdomain: process.env.NHOST_SUBDOMAIN,
+    region: process.env.NHOST_REGION || 'eu-central-1',
   },
 
-  // Configuration Nitro
-  nitro: {
-    preset: 'node',
-  },
-
-  // Configuration runtime (variables d'environnement)
+  // Configuration runtime
   runtimeConfig: {
-    // Variables privées (accessibles uniquement côté serveur)
-    jwtSecret: process.env.NHOST_JWT_SECRET || '', // Clé secrète JWT
-    mongodbUri: process.env.MONGODB_URI || '', // Conservez cette variable pour une éventuelle compatibilité future
+    // Variables privées (côté serveur uniquement)
+    nhostAdminSecret: process.env.NHOST_ADMIN_SECRET,
+    nhostWebhookSecret: process.env.NHOST_WEBHOOK_SECRET,
 
-    // Variables publiques (accessibles côté client et serveur)
+    // Variables publiques (côté client et serveur)
     public: {
-      apiBase: process.env.NHOST_GRAPHQL_URL || 'https://abc123abc.graphql.eu-central-1.nhost.run/v1', // URL GraphQL de Nhost
-      baseUrl: process.env.BASE_URL || 'http://localhost:3000', // URL de base de votre application
-      auth: {
-        isEnabled: true,
-        baseURL: process.env.NHOST_AUTH_URL || 'https://abc123abc.auth.eu-central-1.nhost.run/v1', // URL d'authentification de Nhost
-        provider: {
-          type: 'oauth', // Type de connexion (OAuth)
-        },
-      },
-    },
+      nhostSubdomain: process.env.NHOST_SUBDOMAIN,
+      nhostRegion: process.env.NHOST_REGION,
+      nhostGraphqlUrl: process.env.NHOST_GRAPHQL_URL,
+      nhostAuthUrl: process.env.NHOST_AUTH_URL,
+      nhostStorageUrl: process.env.NHOST_STORAGE_URL,
+      nhostFunctionsUrl: process.env.NHOST_FUNCTIONS_URL,
+    }
   },
 
-  // Modules Nuxt
+  // Modules
   modules: [
-    '@nuxtjs/tailwindcss', // Tailwind CSS
-    '@pinia/nuxt', // Pinia pour la gestion de l'état
-    '@vueuse/nuxt', // VueUse pour des utilitaires de composition
-    '@nuxtjs/color-mode', // Gestion des modes de couleur
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/color-mode'
   ],
 
-  // Fichiers CSS globaux
+  // CSS global
   css: [
-    'assets/css/style.css', // Votre fichier CSS personnalisé
-    'vue3-toastify/dist/index.css', // CSS pour les notifications Toastify
+    'assets/css/style.css',
+    'vue3-toastify/dist/index.css'
   ],
 
-  // Configuration de build
+  // Build
   build: {
-    transpile: ['vue3-toastify'], // Transpiler Vue3 Toastify
+    transpile: ['vue3-toastify']
   },
 
-  // Date de compatibilité (pour les environnements modernes)
-  compatibilityDate: '2025-02-05',
-});
+  // Date de compatibilité
+  compatibilityDate: '2025-02-05'
+})
